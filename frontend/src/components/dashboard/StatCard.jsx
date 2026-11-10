@@ -1,0 +1,2 @@
+import Card from '../common/Card.jsx';
+export default function StatCard({ title, value, icon: Icon, description }) { return <Card className="p-5"><div className="flex items-start justify-between gap-4"><div className="min-w-0"><p className="truncate text-sm font-medium text-slate-500">{title}</p><p className="mt-2 text-2xl font-bold tracking-tight text-slate-950">{value}</p>{description && <p className="mt-2 text-xs text-slate-400">{description}</p>}</div><div className="rounded-lg bg-blue-50 p-2.5 text-blue-600"><Icon size={20}/></div></div></Card>; }

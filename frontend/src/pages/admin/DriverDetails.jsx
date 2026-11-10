@@ -1,0 +1,1 @@
+import AccountDetails from '../../components/admin/AccountDetails.jsx'; export default function DriverDetails(){return <AccountDetails kind="driver" allowDelete={false} futureStats={[["Total Deliveries",0],["Completed Deliveries",0],["Pending Deliveries",0]]}/>}

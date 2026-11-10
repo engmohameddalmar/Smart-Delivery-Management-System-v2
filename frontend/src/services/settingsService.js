@@ -1,0 +1,1 @@
+import api from './api.js';export const getPublicSettings=()=>api.get('/settings/public').then(r=>r.data.data);export const getSettings=()=>api.get('/settings').then(r=>r.data.data);export const updateSettings=data=>api.put('/settings',data).then(r=>r.data.data);

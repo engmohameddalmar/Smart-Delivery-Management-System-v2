@@ -1,0 +1,1 @@
+import ChartShell from './ChartShell.jsx';export default function RevenueChart({data=[]}){return <ChartShell title="Revenue over time" data={data} valueKey="revenue" color="#059669" format={value=>`$${Number(value).toFixed(2)}`}/>}

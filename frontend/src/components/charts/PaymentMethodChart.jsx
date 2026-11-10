@@ -1,0 +1,1 @@
+import ChartShell from './ChartShell.jsx';export default function PaymentMethodChart({data=[]}){return <ChartShell title="Payment methods" data={data} labelKey="method" valueKey="count" color="#8b5cf6"/>}

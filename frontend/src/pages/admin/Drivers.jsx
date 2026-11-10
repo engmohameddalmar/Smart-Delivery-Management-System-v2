@@ -1,0 +1,1 @@
+import UserManagement from '../../components/admin/UserManagement.jsx'; export default function Drivers(){return <UserManagement title="Drivers" fixedRole="driver" detailsBase="/admin/drivers" allowDelete={false} allowCreate createRole="driver"/>}

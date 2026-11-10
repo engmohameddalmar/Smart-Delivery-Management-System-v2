@@ -1,0 +1,2 @@
+import { Inbox } from 'lucide-react';
+export default function EmptyState({ title = 'No records found.', description, action }) { return <div className="grid place-items-center px-5 py-12 text-center"><span className="rounded-full bg-slate-100 p-3 text-slate-400"><Inbox size={22}/></span><p className="mt-3 text-sm font-semibold text-slate-700">{title}</p>{description && <p className="mt-1 max-w-sm text-sm text-slate-500">{description}</p>}{action && <div className="mt-4">{action}</div>}</div>; }

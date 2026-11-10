@@ -1,0 +1,1 @@
+import Badge from '../common/Badge.jsx';const tones={Assigned:'neutral',Accepted:'info',Rejected:'danger','Picked Up':'info','In Transit':'info','Out for Delivery':'warning',Delivered:'success',Failed:'danger',Cancelled:'danger'};export default function DeliveryStatusBadge({status}){return <Badge tone={tones[status]||'neutral'}>{status}</Badge>}

@@ -1,0 +1,5 @@
+import { Bell, CreditCard, LayoutDashboard, Package, User } from 'lucide-react';
+import { useState } from 'react'; import { Outlet } from 'react-router-dom';
+import Sidebar from '../components/dashboard/Sidebar.jsx'; import Topbar from '../components/dashboard/Topbar.jsx'; import RoleSystemSummary from '../components/dashboard/RoleSystemSummary.jsx';
+const items = [['Dashboard', LayoutDashboard, '/customer/dashboard'], ['My Orders', Package, '/customer/orders'], ['Payments', CreditCard, '/customer/payments'], ['Notifications', Bell, '/notifications'], ['Profile', User, '/profile']].map(([label, icon, to]) => ({ label, icon, to, enabled: true }));
+export default function CustomerLayout() { const [open, setOpen] = useState(false); return <div><Sidebar items={items} open={open} onClose={() => setOpen(false)}/><div className="min-h-screen lg:pl-64"><Topbar title="Customer Portal" onMenu={() => setOpen(true)}/><RoleSystemSummary role="customer"/><main className="p-4 sm:p-6 lg:p-8"><Outlet/></main></div></div>; }

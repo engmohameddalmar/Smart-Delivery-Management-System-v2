@@ -1,0 +1,12 @@
+import { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import api from '../services/api.js';
+const AuthContext = createContext(null);
+function readStoredUser(){try{return JSON.parse(localStorage.getItem('user'));}catch{localStorage.removeItem('user');return null;}}
+export function AuthProvider({children}){const [user,setUser]=useState(readStoredUser);const [token,setToken]=useState(()=>localStorage.getItem('token'));const [loading,setLoading]=useState(true);
+  const clearSession=useCallback(()=>{localStorage.removeItem('token');localStorage.removeItem('user');setToken(null);setUser(null);},[]);
+  const saveSession=useCallback(data=>{localStorage.setItem('token',data.token);localStorage.setItem('user',JSON.stringify(data.user));setToken(data.token);setUser(data.user);},[]);
+  const getCurrentUser=useCallback(async()=>{const response=await api.get('/auth/me');localStorage.setItem('user',JSON.stringify(response.data.user));setUser(response.data.user);return response.data.user;},[]);
+  useEffect(()=>{const restore=async()=>{if(!localStorage.getItem('token')){clearSession();setLoading(false);return;}try{await getCurrentUser();}catch{clearSession();}finally{setLoading(false);}};restore();const unauthorized=()=>{clearSession();setLoading(false);};const synchronizeSession=event=>{if(event.key==='token'||event.key==='user'){setLoading(true);restore();}};window.addEventListener('auth:unauthorized',unauthorized);window.addEventListener('storage',synchronizeSession);return()=>{window.removeEventListener('auth:unauthorized',unauthorized);window.removeEventListener('storage',synchronizeSession);};},[clearSession,getCurrentUser]);
+  const register=async details=>{const response=await api.post('/auth/register',details);saveSession(response.data);return response.data.user;};const login=async credentials=>{const response=await api.post('/auth/login',credentials);saveSession(response.data);return response.data.user;};const logout=async()=>{setLoading(true);try{if(token)await api.post('/auth/logout');}finally{clearSession();setLoading(false);}};
+  const value=useMemo(()=>({user,token,loading,isAuthenticated:Boolean(token&&user),register,login,logout,getCurrentUser}),[user,token,loading,getCurrentUser]);return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;}
+export function useAuth(){const context=useContext(AuthContext);if(!context)throw new Error('useAuth must be used inside AuthProvider');return context;}

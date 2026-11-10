@@ -1,0 +1,1 @@
+export default function Input({ label, id, className = '', ...props }) { return <div><label className="field-label" htmlFor={id}>{label}</label><input id={id} className={`w-full rounded-lg border border-slate-300 bg-white px-3.5 py-2.5 text-sm outline-none placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-100 ${className}`} {...props} /></div>; }

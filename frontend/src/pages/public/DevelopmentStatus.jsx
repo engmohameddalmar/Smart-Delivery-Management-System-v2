@@ -1,0 +1,2 @@
+import { useEffect, useState } from 'react'; import api from '../../services/api.js';
+export default function DevelopmentStatus(){const [connected,setConnected]=useState(null);useEffect(()=>{api.get('/health').then(()=>setConnected(true)).catch(()=>setConnected(false))},[]);return <div className="mt-6 flex items-center gap-2 text-xs text-slate-500"><span className={`h-2.5 w-2.5 rounded-full ${connected===null?'bg-slate-300':connected?'bg-emerald-500':'bg-red-500'}`}/>{connected===null?'Checking backend…':connected?'Backend Connected':'Backend Disconnected'}</div>}

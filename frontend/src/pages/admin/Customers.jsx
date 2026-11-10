@@ -1,0 +1,1 @@
+import UserManagement from '../../components/admin/UserManagement.jsx'; export default function Customers(){return <UserManagement title="Customers" fixedRole="customer" detailsBase="/admin/customers" allowDelete={false}/>}

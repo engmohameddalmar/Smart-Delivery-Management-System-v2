@@ -1,0 +1,1 @@
+import ActivityLog from '../models/ActivityLog.js';export async function logActivity(request,{action,entityType,entityId=null,description}){if(!request.user)return;await ActivityLog.create({user:request.user._id,action,entityType,entityId,description,ipAddress:request.ip||request.socket?.remoteAddress||''});}

@@ -1,0 +1,1 @@
+export default function PageHeader({ title, subtitle, actions }) { return <div className="page-heading"><div><h1 className="text-2xl font-bold tracking-tight text-slate-950">{title}</h1>{subtitle && <p className="page-subtitle">{subtitle}</p>}</div>{actions && <div className="flex flex-wrap gap-2">{actions}</div>}</div>; }

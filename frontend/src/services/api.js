@@ -1,0 +1,10 @@
+import axios from 'axios';
+const configuredApiUrl = import.meta.env.VITE_API_URL?.trim();
+if (import.meta.env.PROD && !configuredApiUrl) throw new Error('VITE_API_URL is required for production builds');
+const developmentApiUrl = import.meta.env.DEV ? 'http://localhost:5000/api' : '';
+export const API_BASE_URL = (configuredApiUrl || developmentApiUrl).replace(/\/$/, '');
+export const API_ORIGIN = API_BASE_URL.replace(/\/api$/, '');
+const api = axios.create({ baseURL: API_BASE_URL, timeout: 10000, headers: { Accept: 'application/json' } });
+api.interceptors.request.use((config) => { const token = localStorage.getItem('token'); if (token) config.headers.Authorization = `Bearer ${token}`; return config; });
+api.interceptors.response.use((response) => response, (error) => { if (error.response?.status === 401 && localStorage.getItem('token')) { localStorage.removeItem('token'); localStorage.removeItem('user'); window.dispatchEvent(new Event('auth:unauthorized')); } return Promise.reject(error); });
+export default api;

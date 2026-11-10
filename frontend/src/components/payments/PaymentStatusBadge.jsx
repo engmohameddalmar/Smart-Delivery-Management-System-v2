@@ -1,0 +1,1 @@
+import Badge from '../common/Badge.jsx';const tones={Pending:'warning',Paid:'success',Failed:'danger',Cancelled:'neutral',Refunded:'info'};export default function PaymentStatusBadge({status}){return <Badge tone={tones[status]||'neutral'}>{status}</Badge>}

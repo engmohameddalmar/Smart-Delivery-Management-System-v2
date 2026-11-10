@@ -1,0 +1,1 @@
+import ChartShell from './ChartShell.jsx';export default function DeliveryStatusChart({data=[]}){return <ChartShell title="Delivery status" data={data} labelKey="status" valueKey="count" color="#0ea5e9"/>}

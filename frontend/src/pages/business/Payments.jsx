@@ -1,0 +1,14 @@
+import { Eye } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import Button from '../../components/common/Button.jsx';
+import ErrorState from '../../components/common/ErrorState.jsx';
+import Loading from '../../components/common/Loading.jsx';
+import PaymentStatusBadge from '../../components/payments/PaymentStatusBadge.jsx';
+import api from '../../services/api.js';
+
+export default function Payments() {
+  const [data, setData] = useState([]); const [pagination, setPagination] = useState({ page: 1, pages: 0, total: 0 }); const [page, setPage] = useState(1); const [status, setStatus] = useState(''); const [loading, setLoading] = useState(true); const [error, setError] = useState('');
+  useEffect(() => { setLoading(true); api.get('/payments/my', { params: { page, limit: 10, status: status || undefined } }).then(r => { setData(r.data.data); setPagination(r.data.pagination); setError(''); }).catch(err => setError(err.response?.data?.message || 'Unable to load payment history.')).finally(() => setLoading(false)); }, [page, status]);
+  return <div><h1 className="text-2xl font-extrabold">Payment History</h1><p className="page-subtitle">Online delivery-fee payments for your business orders.</p><select value={status} onChange={e => { setStatus(e.target.value); setPage(1); }} className="mt-6 rounded-lg border bg-white px-4 py-3 text-sm"><option value="">All statuses</option>{['Pending', 'Paid', 'Failed', 'Cancelled', 'Refunded'].map(x => <option key={x}>{x}</option>)}</select>{loading ? <Loading label="Loading payments…" /> : error ? <div className="mt-6"><ErrorState message={error} /></div> : <div className="mt-6 overflow-hidden rounded-2xl border bg-white"><div className="overflow-x-auto"><table className="w-full min-w-[760px] text-left text-sm"><thead className="bg-slate-50 text-xs uppercase text-slate-500"><tr>{['Payment ID', 'Order', 'Amount', 'Method', 'Status', 'Date', 'View'].map(x => <th className="px-4 py-3" key={x}>{x}</th>)}</tr></thead><tbody>{data.map(p => <tr className="border-t" key={p._id}><td className="px-4 py-4 font-semibold">{p.paymentId}</td><td className="px-4 py-4">{p.order?.orderId}</td><td className="px-4 py-4">${Number(p.amount || 0).toFixed(2)}</td><td className="px-4 py-4">Online</td><td className="px-4 py-4"><PaymentStatusBadge status={p.status} /></td><td className="px-4 py-4">{new Date(p.createdAt).toLocaleDateString()}</td><td className="px-4 py-4"><Link to={`/business/payments/${p._id}`} className="text-indigo-600"><Eye size={18} /></Link></td></tr>)}</tbody></table></div><div className="flex justify-between border-t p-4 text-sm"><span>{pagination.total} results</span><div className="flex gap-2"><Button variant="secondary" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>Previous</Button><Button variant="secondary" disabled={page >= pagination.pages} onClick={() => setPage(p => p + 1)}>Next</Button></div></div></div>}</div>;
+}

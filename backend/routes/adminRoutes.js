@@ -1,0 +1,18 @@
+import { Router } from 'express'; import { authorize, protect } from '../middleware/authMiddleware.js';
+import { getDashboardStats, getOrderStats, getRecentUsers } from '../controllers/adminController.js';
+import {getPaymentStats} from '../controllers/paymentController.js';
+import { createBusiness, deleteBusiness, getBusinesses, getBusinessById, resetBusinessPassword, updateBusiness, updateBusinessStatus } from '../controllers/businessController.js';
+const router = Router();
+router.get('/test', protect, authorize('admin'), (_request, response) => response.json({ success: true, message: 'Admin access granted' }));
+router.get('/dashboard/stats', protect, authorize('admin'), getDashboardStats);
+router.get('/dashboard/recent-users', protect, authorize('admin'), getRecentUsers);
+router.get('/dashboard/order-stats', protect, authorize('admin'), getOrderStats);
+router.get('/dashboard/payment-stats', protect, authorize('admin'), getPaymentStats);
+router.get('/businesses', protect, authorize('admin'), getBusinesses);
+router.post('/businesses', protect, authorize('admin'), createBusiness);
+router.get('/businesses/:id', protect, authorize('admin'), getBusinessById);
+router.put('/businesses/:id', protect, authorize('admin'), updateBusiness);
+router.patch('/businesses/:id/status', protect, authorize('admin'), updateBusinessStatus);
+router.patch('/businesses/:id/reset-password', protect, authorize('admin'), resetBusinessPassword);
+router.delete('/businesses/:id', protect, authorize('admin'), deleteBusiness);
+export default router;
